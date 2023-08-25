@@ -16,6 +16,7 @@ type Module struct {
 	repo            domain.Reposiory
 	useCase         domain.Usecase
 	AddRegistration utils.Handler
+	GetRegisters    utils.Handler
 }
 
 func New(db *gorm.DB, schoolModule *school.Module,
@@ -25,5 +26,6 @@ func New(db *gorm.DB, schoolModule *school.Module,
 	m.repo = repository.NewRepository(db)
 	m.useCase = usecase.NewUc(m.repo, schoolModule, studentModule, teacherModule)
 	m.AddRegistration = delivery.NewRegisterHandler(m.useCase)
+	m.GetRegisters = delivery.NewGetRegisterHandler(m.useCase)
 	return m
 }

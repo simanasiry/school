@@ -2,25 +2,23 @@ package delivery
 
 import (
 	"github.com/gin-gonic/gin"
-	"github.com/simanasiry/school/teacher/domain"
+	"github.com/simanasiry/school/student/domain"
 	"github.com/simanasiry/school/utils"
 	"net/http"
-	"strconv"
 )
 
-type getStudentsHandler struct {
+type getStudentHandler struct {
 	domain.Usecase
 }
 
-func NewStudentHandler(usecase domain.Usecase) utils.Handler {
-	addTeacher := new(getStudentsHandler)
-	addTeacher.Usecase = usecase
-	return addTeacher
+func NewGetStudentsHandler(usecase domain.Usecase) utils.Handler {
+	addstudent := new(getStudentHandler)
+	addstudent.Usecase = usecase
+	return addstudent
 }
 
-func (teacher *getStudentsHandler) Handle() func(ctx *gin.Context) {
+func (student *getStudentHandler) Handle() func(ctx *gin.Context) {
 	return func(ctx *gin.Context) {
-
 		// check authorization
 		role, _ := ctx.GetQuery("role")
 		if role == "" {
@@ -32,10 +30,7 @@ func (teacher *getStudentsHandler) Handle() func(ctx *gin.Context) {
 			return
 		}
 
-		teacherIdStr := ctx.Param("teacherId")
-		teacherId, _ := strconv.ParseUint(teacherIdStr, 10, 64)
-
-		err, code, result := teacher.Usecase.GetStudents(teacherId)
+		err, code, result := student.Usecase.GetStudents()
 		if err != nil {
 			ctx.JSON(code, gin.H{"error": err.Error()})
 			return

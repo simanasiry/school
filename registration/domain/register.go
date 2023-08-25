@@ -17,7 +17,8 @@ func (Register) TableName() string {
 }
 
 type AddRegisterRequest struct {
-	UserRequested string `json:"userRequested" binding:"required"`
-	TeacherId     uint64 `json:"teacherId" binding:"required"`
-	StudentId     uint64 `json:"studentId" binding:"required"`
+	UserName  string `json:"userName" binding:"required"`
+	Role      string `json:"role" binding:"required"`
+	TeacherId uint64 `json:"teacherId" binding:"required"`
+	StudentId uint64 `json:"studentId" binding:"required"`
 }

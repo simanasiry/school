@@ -2,21 +2,25 @@ package usecase
 
 import (
 	"errors"
+	"github.com/go-sql-driver/mysql"
 	"github.com/simanasiry/school/registration/domain"
 	sd "github.com/simanasiry/school/school/domain"
 	std "github.com/simanasiry/school/student/domain"
 	td "github.com/simanasiry/school/teacher/domain"
-	"github.com/go-sql-driver/mysql"
 	"gorm.io/gorm"
 	"net/http"
 )
 
 func (uc *usecase) AddRegister(requestBody *domain.AddRegisterRequest) (error, int, *domain.Register) {
 
-	// userRequested must be master (check school table) to add Registers
+	// check if the user has headmaster role
+	if requestBody.Role != "headMaster" {
+		return errors.New("only user with headMaster role can registar"), http.StatusUnauthorized, nil
+	}
+	// check if this head-master has been registered with admin before
 	school := sd.School{}
 	err := uc.schoolModule.Repo.Model(&sd.School{}).
-		Where("head_master =?", requestBody.UserRequested).Scan(&school).Error
+		Where("head_master =?", requestBody.UserName).Scan(&school).Error
 	if err != nil {
 		if errors.Is(err, gorm.ErrRecordNotFound) {
 			return errors.New("no school has been found with this headmaster"),
@@ -30,7 +34,7 @@ func (uc *usecase) AddRegister(requestBody *domain.AddRegisterRequest) (error, i
 		requestBody.StudentId, school.ID).Error
 	if err != nil {
 		if errors.Is(err, gorm.ErrRecordNotFound) {
-			return errors.New("this student doesn't belong to this school"),
+			return errors.New("this student doesn't belong to this headMaster(school)"),
 				http.StatusNotFound, nil
 		}
 		return err, http.StatusInternalServerError, nil

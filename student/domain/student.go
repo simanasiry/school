@@ -17,7 +17,8 @@ func (Student) TableName() string {
 }
 
 type AddStudentRequest struct {
-	UserRequested string `json:"userRequested"binding:"required"`
-	Student       string `json:"student" binding:"required"`
-	SchoolId      uint64 `json:"schoolId" binding:"required"`
+	UserName string `json:"userName"binding:"required"`
+	Role     string `json:"role" binding:"required"`
+
+	Student string `json:"student" binding:"required"`
 }

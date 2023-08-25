@@ -2,32 +2,34 @@ package usecase
 
 import (
 	"errors"
+	"github.com/go-sql-driver/mysql"
 	sd "github.com/simanasiry/school/school/domain"
 	"github.com/simanasiry/school/student/domain"
-	"github.com/go-sql-driver/mysql"
-	"gorm.io/gorm"
+	"github.com/simanasiry/school/utils"
 	"net/http"
 )
 
 func (uc *usecase) AddStudent(requestBody *domain.AddStudentRequest) (error, int, *domain.Student) {
 
 	// userRequested must be master (check school table) to add students
-	school := sd.School{
-		HeadMaster: requestBody.UserRequested,
-		ID:         requestBody.SchoolId,
+	if requestBody.Role != utils.HeadMaster {
+		return errors.New("only headmaster can add teachers"), http.StatusUnauthorized, nil
 	}
-	err := uc.schoolModule.Repo.First(&school).Error
+	// userRequested must be master (check school table) to add teachers
+	newSchool := sd.School{}
+	err := uc.schoolModule.Repo.Model(&sd.School{}).
+		Where("head_master = ? ", requestBody.UserName).Scan(&newSchool).Error
 	if err != nil {
-		if errors.Is(err, gorm.ErrRecordNotFound) {
-			return errors.New("no school has been found with this id and headmaster"),
-				http.StatusNotFound, nil
-		}
 		return err, http.StatusInternalServerError, nil
+	}
+	if newSchool.ID == 0 {
+		return errors.New("no school has been found with this  headmaster"),
+			http.StatusNotFound, nil
 	}
 
 	role := domain.Student{
 		Student:  requestBody.Student,
-		SchoolId: requestBody.SchoolId,
+		SchoolId: newSchool.ID,
 	}
 	err = uc.repo.Create(&role).Error
 	if err != nil {

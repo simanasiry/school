@@ -1,9 +1,9 @@
 package delivery
 
 import (
+	"github.com/gin-gonic/gin"
 	"github.com/simanasiry/school/student/domain"
 	"github.com/simanasiry/school/utils"
-	"github.com/gin-gonic/gin"
 	"net/http"
 )
 

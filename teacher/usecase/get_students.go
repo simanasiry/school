@@ -7,6 +7,9 @@ import (
 
 func (uc *usecase) GetStudents(teacherId uint64) (error, int, *[]std.Student) {
 
-	uc.Repo.GetStudents(teacherId)
-	return nil, http.StatusOK, nil
+	result, err := uc.Repo.GetStudents(teacherId)
+	if err != nil {
+		return err, http.StatusInternalServerError, nil
+	}
+	return nil, http.StatusOK, result
 }

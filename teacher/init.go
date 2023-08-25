@@ -15,6 +15,7 @@ type Module struct {
 	useCase     domain.Usecase
 	AddTeacher  utils.Handler
 	GetStudents utils.Handler
+	GetTeachers utils.Handler
 }
 
 func New(db *gorm.DB, schoolModule *school.Module) *Module {
@@ -24,5 +25,6 @@ func New(db *gorm.DB, schoolModule *school.Module) *Module {
 	m.useCase = usecase.NewUc(m.Repo, schoolModule)
 	m.AddTeacher = delivery.NewTeacherHandler(m.useCase)
 	m.GetStudents = delivery.NewStudentHandler(m.useCase)
+	m.GetTeachers = delivery.NewGetTeachersHandler(m.useCase)
 	return m
 }

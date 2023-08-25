@@ -10,9 +10,10 @@ import (
 )
 
 type Module struct {
-	Repo      domain.Reposiory
-	useCase   domain.Usecase
-	AddSchool utils.Handler
+	Repo       domain.Reposiory
+	useCase    domain.Usecase
+	AddSchool  utils.Handler
+	GetSchools utils.Handler
 }
 
 func New(db *gorm.DB) *Module {
@@ -21,5 +22,6 @@ func New(db *gorm.DB) *Module {
 	m.Repo = repository.NewRepository(db)
 	m.useCase = usecase.NewUc(m.Repo)
 	m.AddSchool = delivery.NewSchoolHandler(m.useCase)
+	m.GetSchools = delivery.NewGetSchoolHandler(m.useCase)
 	return m
 }

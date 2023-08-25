@@ -1,11 +1,11 @@
 package app
 
 import (
+	"github.com/gin-gonic/gin"
 	"github.com/simanasiry/school/registration"
 	"github.com/simanasiry/school/school"
 	"github.com/simanasiry/school/student"
 	"github.com/simanasiry/school/teacher"
-	"github.com/gin-gonic/gin"
 	"github.com/spf13/viper"
 	"gorm.io/gorm"
 	"net/http"

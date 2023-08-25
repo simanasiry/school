@@ -7,6 +7,7 @@ import (
 
 type Reposiory interface {
 	Create(interface{}) *gorm.DB
+	Model(interface{}) *gorm.DB
 	First(interface{}, ...interface{}) *gorm.DB
 	GetStudents(teacherId uint64) (*[]std.Student, error)
 }
