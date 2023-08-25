@@ -1,10 +1,5 @@
 debug: true
-middlewares:
-  VirtualReal:
-    type: header
-    headers:
-      - key: X-Mode
-        value: real
+
 http:
   Address: 0.0.0.0:8080
   development: true
