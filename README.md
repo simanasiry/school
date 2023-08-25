@@ -3,4 +3,4 @@
 # there are four tables: schools, teachers, students, registrations 
 1- there is one to many relationship between schools and students\
 2- there is one to many relationship between schools and teachers\
-3- there is many to many relationship between schools and teacher through registrations table.\
+3- there is many to many relationship between schools and teachers through registrations table.
