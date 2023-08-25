@@ -1,0 +1,23 @@
+debug: true
+middlewares:
+  VirtualReal:
+    type: header
+    headers:
+      - key: X-Mode
+        value: real
+http:
+  Address: 0.0.0.0:8080
+  development: true
+
+
+sql:
+  dialect: mysql
+  connectionString: root:12345@tcp(127.0.0.1:3306)/mediana?parseTime=true
+  maxIdleConnections: 5
+  maxOpenConnections: 10
+  maxLifetimeSeconds: 10
+
+
+
+
+
